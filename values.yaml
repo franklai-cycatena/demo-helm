@@ -2,6 +2,37 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Namespace that all chart resources are deployed into.
+# Default: let Helm manage the namespace via `helm install --namespace <ns> --create-namespace`,
+# so the release record and resources live in the same namespace and stay in sync.
+# Set create=true and name=<ns> only if you want the chart itself to render a Namespace object.
+namespace:
+  create: false
+  # Empty string falls back to .Release.Namespace (i.e. whatever `--namespace` was passed).
+  name: ""
+
+# ConfigMap for nginx configuration. Mounted/consumed by the user as needed.
+configMap:
+  enabled: true
+  # Keys become files when mounted as a volume.
+  data:
+    default.conf: |
+      server {
+        listen       80;
+        server_name  _;
+        location / {
+          root   /usr/share/nginx/html;
+          index  index.html index.htm;
+        }
+      }
+
+# Secret object. Provide values via stringData (plain) or data (pre-base64).
+secret:
+  enabled: true
+  type: Opaque
+  stringData: {}
+  data: {}
+
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
@@ -52,9 +83,12 @@ securityContext: {}
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: ClusterIP
+  type: NodePort
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 80
+  # Fixed NodePort for predictable access. Leave empty to let Kubernetes pick from 30000-32767.
+  # Only honored when service.type is NodePort.
+  nodePort: 30080
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:

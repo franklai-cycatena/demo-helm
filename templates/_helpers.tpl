@@ -51,6 +51,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Namespace shared by every resource in the chart.
+Falls back to the release namespace if .Values.namespace.name is empty.
+*/}}
+{{- define "demo-helm.namespace" -}}
+{{- default .Release.Namespace .Values.namespace.name -}}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "demo-helm.serviceAccountName" -}}

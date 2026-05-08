@@ -3,6 +3,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "demo-helm.fullname" . }}
+  namespace: {{ include "demo-helm.namespace" . }}
   labels:
     {{- include "demo-helm.labels" . | nindent 4 }}
 spec:

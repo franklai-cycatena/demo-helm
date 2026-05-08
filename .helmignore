@@ -21,3 +21,7 @@
 .idea/
 *.tmproj
 .vscode/
+# devbox
+devbox.json
+devbox.lock
+.devbox/

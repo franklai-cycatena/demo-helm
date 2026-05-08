@@ -1,0 +1,20 @@
+{
+  "packages": [
+    "kubernetes-helm@latest",
+    "kubectx@latest"
+  ],
+  "shell": {
+    "scripts": {
+      "Ltest": [
+        "helm lint .",
+        "helm template demo-helm . > /dev/null"
+      ],
+      "Linit": [
+        "helm install demo-helm .  --namespace demo-helm --create-namespace"
+      ],
+      "Ldestroy": [
+        "kubectl delete namespace demo-helm"
+      ]
+    }
+  }
+}
