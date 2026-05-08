@@ -10,9 +10,15 @@
         "helm template demo-helm . > /dev/null"
       ],
       "Linit": [
-        "helm install demo-helm .  --namespace demo-helm --create-namespace"
+        "helm install demo-helm . --namespace demo-helm --create-namespace",
+        "kubens demo-helm"
       ],
-      "Ldestroy": [
+      "init": [
+        "helm install demo-helm https://github.com/franklai-cycatena/demo-helm/archive/main.tar.gz  --namespace demo-helm --create-namespace",
+        "kubens demo-helm"
+      ],
+      "destroy": [
+        "kubens default",
         "kubectl delete namespace demo-helm"
       ]
     }
